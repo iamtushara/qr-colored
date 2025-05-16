@@ -19,7 +19,7 @@ dependencies:
   - transformers==4.51.3
   - diffusers==0.33.1
   - accelerate==1.7.0
-  - xformers==0.0.29
+  - xformers==0.0.29.post1
 
   # Settings, Rest API & CLI
   - pydantic==2.11.4
