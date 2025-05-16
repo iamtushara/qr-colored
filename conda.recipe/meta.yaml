@@ -1,0 +1,44 @@
+
+{% set data = load_setup_py_data() %}
+
+package:
+  name: qr-colored
+  
+  version: {{ data['version'] }}
+
+source:
+  path: ..
+
+build:
+  # If the installation is complex, or different between Unix and Windows, use
+  # separate bld.bat and build.sh files instead of this key.  Add the line
+  # "skip: True  # [py<35]" (for example) to limit to Python 3.5 and newer, or
+  # "skip: True  # [not win]" to limit to Windows.
+  script: python setup.py install --single-version-externally-managed --record=record.txt
+
+requirements:
+  build:
+    - python=3.13
+    - setuptools
+  run:
+    - python=3.13
+    
+    # dependencies are defined in setup.py
+    {% for dep in data['install_requires'] %}
+    - {{ dep.lower() }}
+    {% endfor %}
+
+test:
+  source_files:
+    - tests
+  requires:
+    - pytest
+    - pytest-cov
+    - pylint
+  commands:
+    - pytest tests
+    - pylint --exit-zero qr_colored
+
+about:
+  home: https://https://github.com/iamtushara/qr-colored
+  summary: Read the Docs

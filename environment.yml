@@ -1,0 +1,36 @@
+name: qr-colored
+
+channels:
+  # Recommended: only use packages from conda-forge channel
+  - conda-forge
+
+dependencies:
+  # Python
+  - python
+
+  # SECTION 1:
+  # Dependencies in this section must be duplicated in setup.py or pyproject.toml
+
+  # Data Engineering & Analytics
+  - pandas
+
+  # Settings, Rest API & CLI
+  - pydantic
+  - fastapi
+  - typer
+  - uvicorn
+  - requests
+  - python-dotenv
+
+  # SECTION 2:
+  # Dependencies in this section needn't be present in setup.py or pyproject.toml
+
+  # Testing and Code Quality
+  - pytest
+
+  # SECTION 3:
+  # Pip Dependencies
+  # These dependreencies must be declared after all the conda dependencies
+  - pip
+  - pip:
+      - <package-name-here>
