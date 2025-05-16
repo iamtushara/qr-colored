@@ -6,21 +6,25 @@ channels:
 
 dependencies:
   # Python
-  - python
+  - python==3.13.3
 
   # SECTION 1:
   # Dependencies in this section must be duplicated in setup.py or pyproject.toml
 
   # Data Engineering & Analytics
-  - pandas
+  - numpy==2.2.5
+  - pandas==2.2.3
+  - pytorch==2.7.0
+  - qrcode==8.2
+  - diffusers==0.33.1
 
   # Settings, Rest API & CLI
-  - pydantic
-  - fastapi
-  - typer
-  - uvicorn
-  - requests
-  - python-dotenv
+  - pydantic==2.11.4
+  - fastapi==0.115.12
+  - typer==0.15.4
+  - uvicorn==0.34.2
+  - requests==2.32.3
+  - python-dotenv==1.1.0
 
   # SECTION 2:
   # Dependencies in this section needn't be present in setup.py or pyproject.toml
@@ -31,6 +35,6 @@ dependencies:
   # SECTION 3:
   # Pip Dependencies
   # These dependreencies must be declared after all the conda dependencies
-  - pip
-  - pip:
-      - <package-name-here>
+  # - pip
+  # - pip:
+  #     - <package-name-here>
