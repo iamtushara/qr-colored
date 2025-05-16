@@ -14,9 +14,12 @@ dependencies:
   # Data Engineering & Analytics
   - numpy==2.2.5
   - pandas==2.2.3
-  - pytorch==2.7.0
   - qrcode==8.2
+  - pytorch==2.6.0
+  - transformers==4.51.3
   - diffusers==0.33.1
+  - accelerate==1.7.0
+  - xformers==0.0.29
 
   # Settings, Rest API & CLI
   - pydantic==2.11.4
