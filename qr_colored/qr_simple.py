@@ -21,7 +21,7 @@ def generate_qrcode(content: str,
     content : str
         The content to encode into the QR code.
     version : int, optional
-        Controls the size of the QR Code (1 to 40). Higher numbers = bigger code.
+        Controls the size of QR Code (1 to 40). Higher numbers = bigger code.
     error_correction : int, optional
         Error correction level: L (7%), M (15%), Q (25%), H (30%).
     box_size : int, optional
@@ -45,7 +45,7 @@ def generate_qrcode(content: str,
     """
     # Initialize a QRCode object with the given configuration
     # for size, error correction, and layout.
-    qr = qrcode.QRCode(
+    qr_object = qrcode.QRCode(
         version=version,
         error_correction=error_correction,
         box_size=box_size,
@@ -54,12 +54,12 @@ def generate_qrcode(content: str,
 
     # Add the provided content to the QR matrix and
     # auto-adjust the structure to fit the data.
-    qr.add_data(content)
-    qr.make(fit=True)
+    qr_object.add_data(content)
+    qr_object.make(fit=True)
 
     # Generate a black-and-white QR code image from the
     # matrix and convert it to grayscale mode ('L').
-    qr_image = qr.make_image(fill_color='black', back_color='white')
+    qr_image = qr_object.make_image(fill_color='black', back_color='white')
     qr_image = qr_image.convert('L')  # pyright: ignore
 
     # Extract the raw size of the QR code image before adding any padding.
@@ -68,27 +68,34 @@ def generate_qrcode(content: str,
     # Calculate the minimum additional space needed to prevent edge clipping.
     min_offset = 8 * box_size
 
-    # Compute the final canvas size by rounding up to the nearest multiple of `padding_multiple`.
-    # This ensures consistent alignment in grid-based image layouts or display systems.
-    padded_width = (qr_width + 255 + min_offset) // padding_multiple * padding_multiple
-    padded_height = (qr_height + 255 + min_offset) // padding_multiple * padding_multiple
+    # Compute the final canvas size by rounding up to the nearest
+    # multiple of `padding_multiple`. This ensures consistent alignment
+    # in grid-based image layouts or display systems.
+    padding_multiple_sq = padding_multiple * padding_multiple
+    padded_width = (qr_width + 255 + min_offset) // padding_multiple_sq
+    padded_height = (qr_height + 255 + min_offset) // padding_multiple_sq
 
     # Guard against generating images that are excessively large.
     if padded_width > max_size:
-        raise ValueError("Content too large for the configured maximum image size!")
+        raise ValueError("Content too large for the configured image size!")
 
-    # Create a new blank canvas (white background) in grayscale mode with the padded dimensions.
+    # Create a new blank canvas (white background)
+    # in grayscale mode with the padded dimensions.
     canvas = Image.new('L', (padded_width, padded_height), 255)
 
-    # Calculate the top-left coordinates where the QR image should be pasted to appear centered.
-    # Coordinates are aligned to `box_size` to ensure visual symmetry and alignment.
+    # Calculate the top-left coordinates where the QR image should be
+    # pasted to appear centered. Coordinates are aligned to `box_size`
+    # to ensure visual symmetry and alignment.
+    box_size_sq = box_size * box_size
     top_left: Tuple[int, int] = (
-        ((padded_width - qr_width) // 2) // box_size * box_size,
-        ((padded_height - qr_height) // 2) // box_size * box_size,
+        ((padded_width - qr_width) // 2) // box_size_sq,
+        ((padded_height - qr_height) // 2) // box_size_sq,
     )
 
-    # Paste the QR code onto the center of the canvas using the calculated position.
+    # Paste the QR code onto the center of the
+    # canvas using the calculated position.
     canvas.paste(qr_image, top_left)
 
-    # Return the final padded QR code image ready for saving, displaying, or further processing.
+    # Return the final padded QR code image ready for
+    # saving, displaying, or further processing.
     return canvas
