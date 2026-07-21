@@ -23,7 +23,7 @@ requirements = [
 
 setup(
     name='qr-colored',
-    version=versioneer.get_version(),
+    # version=versioneer.get_version(),
     packages=find_packages(where='.', exclude=['tests', 'tests.*']),
     install_requires=requirements,
     keywords='qr-colored',
